@@ -251,6 +251,12 @@ def get_attachment_url(file_id: str) -> str:
         Full URL to access the attachment
     """
     from core.config import WORKSPACE_MCP_PORT, WORKSPACE_MCP_BASE_URI
+    from auth.oauth_callback_server import ensure_oauth_callback_available
+
+    # Ensure the HTTP server is running so attachment URLs are reachable
+    ensure_oauth_callback_available(
+        "stdio", port=WORKSPACE_MCP_PORT, base_uri=WORKSPACE_MCP_BASE_URI
+    )
 
     # Use external URL if set (for reverse proxy scenarios)
     external_url = os.getenv("WORKSPACE_EXTERNAL_URL")
